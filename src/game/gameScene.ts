@@ -4,6 +4,7 @@ import playerimg from "../../public/images/Tiles/tile_0085.png"
 import boximg from "../../public/images/Tiles/tile_0072.png"
 import guitarimg from "../../public/images/Tiles/tile_0073.png"
 import phoneimg from "../../public/images/Tiles/tile_0074.png"
+import riddleimg from "../../public/images/Tiles/tile_0075.png"
 import Item from "./item"
 import Player from "./player";
 import { bridge } from "../bridge/bridge";
@@ -20,6 +21,7 @@ export default class MainScene extends Phaser.Scene{
         this.load.image('Box', boximg)
         this.load.image('Guitar', guitarimg)
         this.load.image('Phone', phoneimg)
+        this.load.image('riddle', riddleimg)
     }
     player: Player
     items: Item[]
@@ -56,19 +58,6 @@ export default class MainScene extends Phaser.Scene{
       this.items.forEach((item, index, number) => {
         item.update(this.player)
       });      
-      // this.collision_detect()
     }
 
-    // collision_detect() {
-    //   this.items.forEach((item, index, number) => {
-    //     let dx = this.player.x - item.x
-    //     let dy = this.player.y - item.y
-    //     if (dx * dx + dy * dy < 100 && !item.collected) {
-    //       // console.log('Collision')
-    //       item.on_collected()
-    //       item.destroy()
-    //       bridge.sendMessage(PROMPT.PICK("vincent", "socks", "his room", 30))
-    //     }
-    //   });
-    // }
 }
