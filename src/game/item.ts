@@ -21,7 +21,7 @@ export default class Item extends Phaser.GameObjects.Container{
     let dy = player.y - this.y
     if (dx * dx + dy * dy < 100 && ! this.collected) {
       this.collected = true
-      bridge.sendMessage(PROMPT.PICK("vincent", "socks", "his room", 30))
+      bridge.sendMessage(PROMPT.PICK("vincent", this.name, "his room", 30))
       player.get_item(this.name)
 
       console.log(this.name + " is collected")
