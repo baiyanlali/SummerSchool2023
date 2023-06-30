@@ -35,7 +35,9 @@ export default class MainScene extends Phaser.Scene{
 
         this.aside = this.add.text(50, 500, "asfdsadfsdflkjasdf;lkjsvlkasn;lajsdf;lkajsf;alsdkjf;aslkdfj;adfkj;asdfkj;aslkdfjaslfhjaueyrqw;ekjfnasdj,vhlakufhweaufrqoiuewr",
         {align: 'center', stroke: '#000', strokeThickness: 2, fontSize: '20px'
-        , fixedHeight: 100, fixedWidth: 600, maxLines: 3, wordWrap: { width: 600, useAdvancedWrap: true }})
+        , fixedHeight: 100, fixedWidth: 600, maxLines: 3, 
+            wordWrap: { width: 600, useAdvancedWrap: true }
+        })
     }
 
     update(time: number, delta: number): void {
