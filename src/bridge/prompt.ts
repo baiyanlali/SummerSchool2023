@@ -13,5 +13,8 @@ export const PROMPT = {
     },
     RIDDLE: function(number: number){
         return `create a riddle whose answer is ${number}`
+    },
+    ITEM_CHECK: function(items: String, is_finished = false, others: String = ""){
+        return `now player has  ${items}, and is he finished is ${is_finished}`
     }
 }
