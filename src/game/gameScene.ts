@@ -1,13 +1,13 @@
 import Phaser from "phaser";
 import tile from "../../public/images/Tilemap/tilemap_packed.png"
 import playerimg from "../../public/images/Tiles/tile_0085.png"
-import boximg from "../../public/images/Tiles/tile_0072.png"
-import guitarimg from "../../public/images/Tiles/tile_0073.png"
+import walletimg from "../../public/images/Generated/Man wallet.png"
+import guitarimg from "../../public/images/Generated/Guitar.png"
 import phoneimg from "../../public/images/Generated/Phone.png"
-import riddleimg from "../../public/images/Tiles/tile_0075.png"
+import riddleimg from "../../public/images/Generated/Woman purse.png"
 import drawingroom from "../../public/images/Generated/Drawingroom.png"
 import bedroom from "../../public/images/Generated/BEDROOM.png"
-
+import end from "../../public/images/Generated/Ending.png"
 import entryimg from "../../public/images/Tiles/tile_0076.png"
 import Item from "./item"
 import Player from "./player";
@@ -24,16 +24,17 @@ export default class MainScene extends Phaser.Scene{
     preload(){
         this.load.image('background', tile)
         this.load.image('player', playerimg)
-        this.load.image('Box', boximg)
+        this.load.image('Wallet', walletimg)
         this.load.image('Guitar', guitarimg)
         this.load.image('Phone', phoneimg)
         this.load.image('riddle', riddleimg)
         this.load.image('bedroom', bedroom)
         this.load.image('drawingroom', drawingroom)
 
-        this.load.image('1', entryimg)
-        this.load.image('2', entryimg)
-        this.load.image('3', entryimg)
+        this.load.image('1', riddleimg)
+        this.load.image('2', riddleimg)
+        this.load.image('3', riddleimg)
+        this.load.image('end', end)
     }
     player: Player
     items: Item[]
@@ -52,23 +53,40 @@ export default class MainScene extends Phaser.Scene{
         // this.add.existing(this.player)
 
         this.items = [
-          new Item(this, 500, 400, "Box", this.onClickImg),
-          new Item(this, 200, 300, "Guitar", this.onClickImg),
-          new Item(this, 0, 0, "Phone", this.onClickImg)
+          new Item(this, 150, 200, "Wallet", this.onClickImg, 0.1),
+          new Item(this, 500, 450, "Guitar", this.onClickImg),
+          new Item(this, 700, 450, "Phone", this.onClickImg, 0.1)
         ]
         this.items.forEach(
           (item, index, number) =>
           this.add.existing(item)
         )
         
-        this.riddle = new Riddle(this, 300, 200, "Answer is 1", "1")
-        this.add.existing(this.riddle)
+        this.generateRiddle()
 
-        this.aside = this.add.text(50, 500, "asfdsadfsdflkjasdf;lkjsvlkasn;lajsdf;lkajsf;alsdkjf;aslkdfj;adfkj;asdfkj;aslkdfjaslfhjaueyrqw;ekjfnasdj,vhlakufhweaufrqoiuewr",
+        this.aside = this.add.text(50, 450, "asfdsadfsdflkjasdf;lkjsvlkasn;lajsdf;lkajsf;alsdkjf;aslkdfj;adfkj;asdfkj;aslkdfjaslfhjaueyrqw;ekjfnasdj,vhlakufhweaufrqoiuewr",
         {align: 'center', stroke: '#000', strokeThickness: 2, fontSize: '20px'
-        , fixedHeight: 100, fixedWidth: 600, maxLines: 3, 
+        , fixedHeight: 200, fixedWidth: 600, maxLines: 5, 
             wordWrap: { width: 600, useAdvancedWrap: true }
         })
+    }
+
+    async generateRiddle(){
+        bridge.sendMessage(PROMPT.RIDDLE(2), (r)=>{
+            this.riddle = new Riddle(this, 300, 200, r, "2", this.onClickImg)
+            this.add.existing(this.riddle)
+        })
+
+    }
+    cnt = 4
+
+    getItem(){
+        this.cnt --
+        if(this.cnt === 0){
+            this.add.image(0, 0, 'end').setOrigin(0, 0).setScale(1.6)
+            console.log("-------GAME END-------")
+            bridge.sendMessage(PROMPT.ENDGOOD(), (s, m)=>{})
+        }
     }
 
     onClickImg = (p, item)=>{
@@ -80,6 +98,7 @@ export default class MainScene extends Phaser.Scene{
         console.log(item.name + " is collected")
         console.log(  `You have ${this.player.item_list.toString()}` )
         item.destroy()
+        this.getItem()
     }
 
     update(time: number, delta: number): void {
@@ -90,7 +109,7 @@ export default class MainScene extends Phaser.Scene{
       this.items.forEach((item, index, number) => {
         item.update(this.player)
       });      
-      this.riddle.update(this.player, delta)
+      this.riddle?.update(this.player, delta)
     }
 
 }

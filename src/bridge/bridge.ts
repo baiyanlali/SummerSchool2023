@@ -6,6 +6,8 @@ class Bridge{
     results: Array<String> = []
     onGenFin = (r)=>{}
     onProgress = (s, m) => {}
+    onGenFinDict: Map<String, (f)=>void> = new Map()
+    has_init: boolean = false
     constructor(){
         this.chat = new webllm.ChatModule();
     }
@@ -17,6 +19,8 @@ class Bridge{
             onProgress(report.text)
         });
         await this.chat.reload("vicuna-v1-7b-q4f32_0")
+        this.has_init = true
+        this.gen()
     }
 
     async gen(){
@@ -24,17 +28,27 @@ class Bridge{
             this.generating = true
             let message = this.messages.pop()
             if(message === undefined)return
+            let onfindic = this.onGenFinDict.get(message)
             let result = await this.chat.generate(message, this.onProgress)
-            this.onGenFin(result)
+            console.log(message, onfindic)
+            if(onfindic){
+                console.log(onfindic, result)
+
+                onfindic(result)
+                // onfindic?.call(result)
+            }else{
+                this.onGenFin(result)
+            }
             this.results.push(result)
         }
         this.generating = false
     }
 
-    sendMessage(message: String){
+    sendMessage(message: String, onFin){
         console.log(`rec: ${message}`)
         this.messages.push(message)
-        if(!this.generating){
+        this.onGenFinDict.set(message, onFin) 
+        if(!this.generating && this.has_init){
             this.gen()
         }
     }

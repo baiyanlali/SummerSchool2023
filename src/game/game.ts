@@ -28,12 +28,12 @@ import { PROMPT } from "../bridge/prompt";
 
 if(true){
     const stories: Array<String> = []
-    bridge.init((p)=>{setLabel("init-label", p);}).then(()=>{bridge.
-        sendMessage(PROMPT.BEGIN())})
+    bridge.init((p)=>{setLabel("init-label", p);})
+    bridge.sendMessage(PROMPT.BEGIN())
     bridge.onGenFin = (r)=>{
         gameMainScene.aside.text = r
         stories.push(r)
-        setLabel("generate-label", stories.join("<br>"))
+        setLabel("generate-label", stories.join("\n"))
         // console.log(r)
     }
     bridge.onProgress = (s, m)=>{

@@ -15,10 +15,10 @@ export const PROMPT = {
         return `polish this sentence to make it more story, no more than ${word_cnt} words: ${sponsor} stroke ${target}, and the result is ${result}`
     },
     RIDDLE: function(number: number){
-        return `create a riddle whose answer is ${number}`
+        return `create a interesting riddle which includes number ${number} within 10 words.`
     },
     ITEM_CHECK: function(items: String, is_finished = false, others: String = ""){
-        return `now player has  ${items}, and is he finished is ${is_finished}`
+        return `now player has ${items}, and is his collecting finishment is ${is_finished}. Write a good ending story with no more than 25 words.`
     },
     ENDGOOD: ()=> `the player collected all the things and get all the memory. Now he can leave with satifing mood`,
     ENDBAD: ()=> `the player do not have time to collect all the things. Now he leaves with regret`
