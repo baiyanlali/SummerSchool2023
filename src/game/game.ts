@@ -23,10 +23,11 @@ const GAME = new Phaser.Game(config)
 
 // GAME.scale.displaySize = 5
 import { bridge } from "../bridge/bridge";
+import { PROMPT } from "../bridge/prompt";
 
 if(true){
     bridge.init((p)=>{setLabel("init-label", p);}).then(()=>{bridge.
-        sendMessage("This is a game where player vincent collect what he lost, please polish every sentence you have met to make like a story. Answer this sentence with no more than 5 words.")})
+        sendMessage(PROMPT.BEGIN())})
     bridge.onGenFin = (r)=>{
         gameMainScene.aside.text = r
         // console.log(r)
