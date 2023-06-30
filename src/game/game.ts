@@ -7,13 +7,15 @@ function setLabel(id: string, text: string) {
       throw Error("Cannot find label " + id);
     }
     label.innerText = text;
-  }
+}
+
+const gameMainScene = new MainScene()
 
 const config: Phaser.Types.Core.GameConfig = {
     type: Phaser.CANVAS,
     width: 800,
     height: 600,
-    scene: [MainScene],
+    scene: [gameMainScene],
     backgroundColor: "#1FFFFF"
 }
 
@@ -22,7 +24,16 @@ const GAME = new Phaser.Game(config)
 // GAME.scale.displaySize = 5
 import { bridge } from "../bridge/bridge";
 
-bridge.init((p)=>{setLabel("init-label", p);}).then(()=>{bridge.sendMessage("This is a game")})
-bridge.onGenFin = (r)=>{
-    console.log(r)
+if(true){
+    bridge.init((p)=>{setLabel("init-label", p);}).then(()=>{bridge.
+        sendMessage("This is a game where player vincent collect what he lost, please polish every sentence you have met to make like a story. Answer this sentence with no more than 5 words.")})
+    bridge.onGenFin = (r)=>{
+        gameMainScene.aside.text = r
+        // console.log(r)
+    }
+    bridge.onProgress = (s, m)=>{
+        gameMainScene.aside.text = m
+        // console.log(m)
+    }
 }
+

@@ -5,6 +5,7 @@ class Bridge{
     messages: Array<String> = []
     results: Array<String> = []
     onGenFin = (r)=>{}
+    onProgress = (s, m) => {}
     constructor(){
         this.chat = new webllm.ChatModule();
     }
@@ -20,12 +21,14 @@ class Bridge{
 
     async gen(){
         while(this.messages.length !== 0){
+            this.generating = true
             let message = this.messages.pop()
             if(message === undefined)return
-            let result = await this.chat.generate(message)
+            let result = await this.chat.generate(message, this.onProgress)
             this.onGenFin(result)
             this.results.push(result)
         }
+        this.generating = false
     }
 
     sendMessage(message: String){
