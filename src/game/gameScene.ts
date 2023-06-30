@@ -5,10 +5,12 @@ import boximg from "../../public/images/Tiles/tile_0072.png"
 import guitarimg from "../../public/images/Tiles/tile_0073.png"
 import phoneimg from "../../public/images/Tiles/tile_0074.png"
 import riddleimg from "../../public/images/Tiles/tile_0075.png"
+import entryimg from "../../public/images/Tiles/tile_0076.png"
 import Item from "./item"
 import Player from "./player";
 import { bridge } from "../bridge/bridge";
 import { PROMPT } from "../bridge/prompt";
+import Riddle from "./riddle";
 
 export default class MainScene extends Phaser.Scene{
     constructor(){
@@ -22,9 +24,14 @@ export default class MainScene extends Phaser.Scene{
         this.load.image('Guitar', guitarimg)
         this.load.image('Phone', phoneimg)
         this.load.image('riddle', riddleimg)
+
+        this.load.image('1', entryimg)
+        this.load.image('2', entryimg)
+        this.load.image('3', entryimg)
     }
     player: Player
     items: Item[]
+    riddle: Riddle
     aside: Phaser.GameObjects.Text
     create(){
         this.add.image(0, 0, 'background').setOrigin(0, 0)
@@ -46,6 +53,9 @@ export default class MainScene extends Phaser.Scene{
           this.add.existing(item)
         )
         
+        this.riddle = new Riddle(this, 300, 200, "Answer is 1", "1")
+        this.add.existing(this.riddle)
+
         this.aside = this.add.text(50, 500, "asfdsadfsdflkjasdf;lkjsvlkasn;lajsdf;lkajsf;alsdkjf;aslkdfj;adfkj;asdfkj;aslkdfjaslfhjaueyrqw;ekjfnasdj,vhlakufhweaufrqoiuewr",
         {align: 'center', stroke: '#000', strokeThickness: 2, fontSize: '20px'
         , fixedHeight: 100, fixedWidth: 600, maxLines: 3, 
@@ -58,6 +68,7 @@ export default class MainScene extends Phaser.Scene{
       this.items.forEach((item, index, number) => {
         item.update(this.player)
       });      
+      this.riddle.update(this.player, delta)
     }
 
 }

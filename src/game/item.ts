@@ -17,9 +17,7 @@ export default class Item extends Phaser.GameObjects.Container{
   }  
 
   update(player: Player) {
-    let dx = player.x - this.x
-    let dy = player.y - this.y
-    if (dx * dx + dy * dy < 100 && ! this.collected) {
+    if (!this.collected && this.check_collected(player)) {
       this.collected = true
       bridge.sendMessage(PROMPT.PICK("vincent", this.name, "his room", 30))
       bridge.sendMessage(PROMPT.ITEM_CHECK(player.item_list.toString(), false))
@@ -30,6 +28,15 @@ export default class Item extends Phaser.GameObjects.Container{
       console.log(  `You have ${player.item_list.toString()}` )
       this.destroy()
     }
+  }
+
+  check_collected(player: Player) {
+    let dx = player.x - this.x
+    let dy = player.y - this.y
+    if (dx * dx + dy * dy < 100) {
+      this.collected = true
+    }
+    return this.collected
   }
 
 }
