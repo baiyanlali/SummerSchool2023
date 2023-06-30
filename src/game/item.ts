@@ -6,10 +6,13 @@ import { PROMPT } from "../bridge/prompt";
 export default class Item extends Phaser.GameObjects.Container{
   collected
 
-  constructor(scene: Phaser.Scene, x: number, y: number, name: string){
+  constructor(scene: Phaser.Scene, x: number, y: number, name: string, onpointerdown = (p, item)=>{}){
     super(scene, x, y)
 
-    const img = scene.add.sprite(0, 0, name).setOrigin(0.5, 1)
+    const img = scene.add.sprite(0, 0, name).setOrigin(0, 0).setScale(0.3)
+
+    img.setInteractive()
+    img.on('pointerdown', (p)=>{onpointerdown(p, this)})
 
     this.add(img)
     this.name = name
