@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import Item from "./item";
 
 const W = 'w'
 const S = 's'
@@ -19,6 +20,7 @@ export default class Player extends Phaser.GameObjects.Container{
     movement = [0, 0]
     isAC = false
     isBC = false
+    item_list: string[] = []
 
     constructor(scene: Phaser.Scene, x: number, y: number){
         super(scene, x, y)
@@ -72,5 +74,9 @@ export default class Player extends Phaser.GameObjects.Container{
     update(d: number): void {
         this.x += this.movement[0] * d * speed
         this.y += this.movement[1] * d * speed
+    }
+
+    get_item(item: string) {
+      this.item_list.push(item)
     }
 }
